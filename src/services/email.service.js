@@ -10,6 +10,13 @@ const { generateEmailTemplate } = require('../EmailTemplate/EmailVerification');
 const sendVerificationEmail = async (email, projectName, inviteUrl) => {
     try {
         // Create a transporter object with environment variables
+        console.log({
+            APP_NAME: process.env.APP_NAME,
+            MAIL_FROM_ADDRESS: process.env.MAIL_FROM_ADDRESS,
+            MAIL_USERNAME: process.env.MAIL_USERNAME,
+            MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+            MAIL_HOST: process.env.MAIL_HOST
+        });
         const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
             port: 587,
@@ -19,13 +26,13 @@ const sendVerificationEmail = async (email, projectName, inviteUrl) => {
                 pass: process.env.MAIL_PASSWORD
             }
         });
-        
+
         // Verify connection configuration before sending
         await transporter.verify();
         // Create verification link with user ID
         // const verificationLink = `${process.env.FRONTEND_URL}/verify-email?id=${id}`;
         const verificationLink = `${process.env.FRONTEND_URL}/${inviteUrl}`;
-        
+
         // Define and send email content
         const info = await transporter.sendMail({
             from: `"${process.env.APP_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,

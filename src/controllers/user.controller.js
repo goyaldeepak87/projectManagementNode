@@ -37,7 +37,6 @@ const deleteUser = catchAsync(async (req, res) => {
 
 
 const createProjects = catchAsync(async (req, res) => {
-  // console.log("axxZx",req);
   const token = req.headers.authorization;
   const userId = await tokenService.verifyTokenUserId(token);
   const result = await userService.createProjects(req.body, userId.sub);
@@ -46,7 +45,6 @@ const createProjects = catchAsync(async (req, res) => {
 
 
 const getMyProjects = catchAsync(async (req, res) => {
-  // console.log("axxZx",req);
   const token = req.headers.authorization;
   const userId = await tokenService.verifyTokenUserId(token);
   const result = await userService.getMyProjects(req.body, userId);
@@ -54,12 +52,10 @@ const getMyProjects = catchAsync(async (req, res) => {
 });
 
 const createMember = catchAsync(async (req, res) => {
-  // console.log("axxZx",req.body);
   const token = req.headers.authorization;
   const userID = await tokenService.verifyTokenUserId(token);
   const result = await userService.createMember(req.body, userID);
-  // const tokensvalue = tokenService.generateProjectAccessToken("sadada", "sadasda")
-  // console.log("tokensvalue", tokensvalue);
+  
   await emailService.sendVerificationEmail(result.email, result.projectName, result.inviteUrl);
 
   res.send(result);

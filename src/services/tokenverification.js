@@ -5,7 +5,6 @@ const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
 
 const generateProjectAccessToken = async (userId, projectId) => {
-  console.log("✅ generateProjectAccessToken called", userId, projectId);
 
   const expires = moment().add(config.jwt.projectAccessExpirationMinutes, 'minutes');
   const payload = {

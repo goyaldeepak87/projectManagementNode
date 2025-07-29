@@ -178,7 +178,6 @@ const getMyProjects = async (projectData, userId) => {
 
 const createMember = async (userBody, inviterId) => {
   const { email, role, userID: projectId } = userBody;
-  console.log("userBody", userBody, "projectId", projectId);
 
   let user = await User.findOne({ email });
   const isNewUser = !user;
@@ -227,9 +226,6 @@ const createMember = async (userBody, inviterId) => {
     ? `verify-and-join?token=${token}`
     : `join-project?token=${token}`;
 
-
-  console.log("Generated token:", token, inviteUrl);
-
   await ProjectMember.create({
     projectId,
     userId: user._id,
@@ -249,8 +245,7 @@ const createMember = async (userBody, inviterId) => {
 
 
 const getMyProjectsAllTeams = async (userIdObj) => {
-  const userId = userIdObj.sub
-  console.log("userId444+>888888", userId);
+  const userId = userIdObj.sub;
   try {
     const teams = await ProjectMember.aggregate([
       // 1. Join with Project collection
@@ -300,8 +295,6 @@ const getMyProjectsAllTeams = async (userIdObj) => {
         $sort: { createdAt: -1 } // Sort by creation date, most recent first
       },
     ]);
-
-    // console.log("teams==>", teams);
     return teams;
   } catch (error) {
     console.error('Error in aggregation:', error);
@@ -311,11 +304,9 @@ const getMyProjectsAllTeams = async (userIdObj) => {
 
 
 const memberVerifyJoin = async (userBody) => {
-  console.log("memberVerifyJoin called with userBody:", userBody);
   const { name, password, token } = userBody;
 
   const payload = await verifyTokenUserId(token);
-  console.log("memberVerifyJoin called with payload:", payload);
 
   const user = await User.findById(payload.sub);
   if (!user) throw new ApiError(404, "User not found");

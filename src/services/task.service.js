@@ -138,7 +138,6 @@ const getProjectMembers = async (projectId) => {
 
 const assignTask = async (taskId, assignedToId, userAuth) => {
   const userId = userAuth.sub;
-  console.log(userId, userAuth)
 
   const task = await Task.findById(taskId);
   if (!task) throw new ApiError(httpStatus.NOT_FOUND, 'Task not found');
@@ -177,7 +176,6 @@ const assignTask = async (taskId, assignedToId, userAuth) => {
 
 const deleteProject = async (userId, projectId) => {
     // 1. Check if project exists and user is admin of it
-    console.log("deleteProject called", projectId, userId);
   const project = await Project.findById(projectId);
   if (!project) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Project not found');

@@ -7,6 +7,9 @@ const { taskController } = require('../../controllers');
 
 const router = express.Router();
 
+
+/* ----------------------------- USER ROUTES ----------------------------- */
+
 router
   .route('/')
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
@@ -19,43 +22,54 @@ router
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
 
-// addmember
-router.route('/project')
-  .post(validate(userValidation.createProjects), userController.createProjects);
+/* ---------------------------- PROJECT ROUTES ---------------------------- */
+// Create a new project
+router.route('/projects')
+  .post(auth(), validate(userValidation.createProjects), userController.createProjects);
 
-router.route('/project/my')
+// Get all projects for the current logged-in user
+router.route('/projects/my')
   .get(auth(), userController.getMyProjects);
 
-router.route('/project/myallteams')
+// Get all teams for the current user's projects
+router.route('/projects/my/teams')
   .get(auth(), userController.getMyProjectsAllTeams);
 
-// addmember
-router.route('/createmember')
-  .post(validate(userValidation.createMember), userController.createMember);
+// Delete a project by ID (admin access)
+router.delete('/projects/:projectId', auth(), taskController.deleteProject);
 
 
-// project tasks create
+
+/* ---------------------------- 👥 MEMBER ROUTES ----------------------------- */
+
+// Add member to a project
+router.route('/projects/members')
+  .post(auth(), validate(userValidation.createMember), userController.createMember);
+
+
+/* ----------------------------- ✅ TASK ROUTES ------------------------------ */
+
+// Create a new task for a project
 router.route('/projects/createtask')
   .post(auth(), validate(userValidation.createTask), taskController.createTask);
 
-// project tasks get by project
+// Get all tasks for a specific project
 router.route('/projects/:projectId/tasks')
   .get(auth(), taskController.getTasksByProject)
 
-// Move task to another column
+// Move task to another column (e.g., "To Do" → "In Progress")
 router.route('/tasks/:taskId/move')
   .patch(auth(), taskController.moveTaskToColumn)
 
-// project tasks get by members
-router.route('/tasks/:projectId/members')
+// Assign a task to a member
+router.route('/projects/:projectId/members')
   .get(auth(), taskController.getProjectMembers)
 
-// project tasks get by assign
+// Get all project members (for assignment dropdown)
 router.route('/tasks/:taskId/assign')
   .patch(auth(), taskController.assignTask)
 
-// admin project Delete 
-router.delete('/projects/:projectId', auth(), taskController.deleteProject);
+
 
 
 

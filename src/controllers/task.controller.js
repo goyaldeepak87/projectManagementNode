@@ -8,7 +8,6 @@ const userMessages = require('../config/messages/userMessages');
 
 const createTask = catchAsync(async (req, res) => {
 
-    console.log("createTask called", req.body);
     const token = req.headers.authorization;
     const userId = await tokenService.verifyTokenUserId(token);
     const result = await taskService.createTask(req.body, userId);
@@ -38,8 +37,6 @@ const moveTaskToColumn = catchAsync(async (req, res) => {
     const { taskId } = req.params;
     const { newStatus } = req.body; // new order index
     const token = req.headers.authorization;
-
-    console.log("moveTaskToColumn called", taskId, newStatus);
 
     const userId = await tokenService.verifyTokenUserId(token);
     const result = await taskService.moveTaskToColumn(newStatus, taskId);
