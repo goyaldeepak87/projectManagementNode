@@ -12,3 +12,5 @@ yarn-error.log
 coverage
 
 1yarn.lock
+
+.env
