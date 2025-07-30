@@ -1,3 +1,4 @@
+// api/index.js
 const serverless = require('serverless-http');
 const mongoose = require('mongoose');
 const app = require('../src/app');
@@ -13,7 +14,10 @@ async function connectToDatabase() {
   }
 }
 
+// This is how Vercel handles serverless Express
+const handler = serverless(app);
+
 module.exports = async (req, res) => {
   await connectToDatabase();
-  return serverless(app)(req, res);
+  return handler(req, res);
 };
