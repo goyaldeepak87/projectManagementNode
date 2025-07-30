@@ -7,10 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let mongoStatus = '❌ Not Connected';
+let mongoStatus = '';
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://g1oyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
