@@ -5,6 +5,7 @@ const routes = require('../src/routes/v1');
 
 const app = express();
 app.use(cors());
+app.options('*', cors());
 app.use(express.json());
 
 let mongoStatus = '⏳ Connecting...';
