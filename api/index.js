@@ -1,20 +1,13 @@
-// api/index.js
-const serverless = require('serverless-http');
-const app = require('../src/app');
-const mongoose = require('mongoose');
-const config = require('../src/config/config');
+const express = require('express');
+const cors = require('cors');
 
-let isConnected = false;
+const app = express();
 
-async function connectDB() {
-  if (!isConnected) {
-    await mongoose.connect(config.mongoose.url, config.mongoose.options);
-    isConnected = true;
-    console.log('✅ MongoDB connected');
-  }
-}
+app.use(cors());
+app.use(express.json());
 
-module.exports = async (req, res) => {
-  await connectDB();
-  return serverless(app)(req, res);
-};
+app.get('/', (req, res) => {
+  res.send('API is working');
+});
+
+module.exports = app;
