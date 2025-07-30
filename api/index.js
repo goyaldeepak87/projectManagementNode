@@ -6,7 +6,7 @@ const routes = require('../src/routes/v1');
 const app = express();
 
 app.use(cors({
-  origin: '*', // or replace with ['https://your-frontend.vercel.app']
+  origin: ['http://localhost:3001'], // or replace with ['https://your-frontend.vercel.app']
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // If you're using cookies or auth headers
