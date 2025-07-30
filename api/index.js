@@ -1,26 +1,19 @@
-const express = require('express');
+const serverless = require('serverless-http');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const app = require('../src/app');
+const config = require('../src/config/config');
 
-const app = express();
+let isConnected;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+async function connectToDatabase() {
+  if (!isConnected) {
+    await mongoose.connect(config.mongoose.url, config.mongoose.options);
+    isConnected = true;
+    console.log("✅ MongoDB connected (vercel)");
+  }
+}
 
-// Connect to MongoDB
-const MONGODB_URI = 'mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0' || 'your-mongodb-url-here';
-
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch((err) => console.error('❌ MongoDB connection error:', err));
-
-// Sample route
-app.get('/', (req, res) => {
-  res.send('✅ API is working with MongoDB4444');
-});
-
-module.exports = app;
+module.exports = async (req, res) => {
+  await connectToDatabase();
+  return serverless(app)(req, res);
+};

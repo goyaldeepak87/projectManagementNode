@@ -1,17 +1,43 @@
-const express = require('express');
-const cors = require('cors');
+const mongoose = require('mongoose');
+const app = require('./app');
+const config = require('./config/config');
+const logger = require('./config/logger');
 
-const app = express();
+let server;
+mongoose.connect('mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority',  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }).then(() => {
+  logger.info('Connected to MongoDB');
+  server = app.listen(config.port, () => {
+    logger.info(`Listening to port ${config.port}`);
+  });
+}).catch((err)=>{
+  console.log("xcxz",err)
+})
 
-app.use(cors());
-app.use(express.json());
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
 
-app.get('/', (req, res) => {
-  res.send('1 API is working');
+const unexpectedErrorHandler = (error) => {
+  logger.error(error);
+  exitHandler();
+};
+
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
+
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received');
+  if (server) {
+    server.close();
+  }
 });
-
-app.get('/dd', (req, res) => {
-  res.send('check API is working');
-});
-
-module.exports = app;
