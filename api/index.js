@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const app = require('../src/app');
 const config = require('../src/config/config');
 
-let isConnected;
+let isConnected = false;
 
 async function connectToDatabase() {
   if (!isConnected) {
     await mongoose.connect(config.mongoose.url, config.mongoose.options);
     isConnected = true;
-    console.log("✅ MongoDB connected (vercel)");
+    console.log("✅ MongoDB connected");
   }
 }
 
