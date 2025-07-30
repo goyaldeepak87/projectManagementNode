@@ -17,16 +17,16 @@ app.get('/', (req, res) => {
 });
 
 // let isConnected = false;
-let db = null;
-async function connectToDatabase() {
-  if (!db) {
-    db = await mongoose.connect(MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("✅ MongoDB connected");
-  }
-}
+// let db = null;
+// async function connectToDatabase() {
+//   if (!db) {
+//     db = await mongoose.connect(MONGODB_URL, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//     console.log("✅ MongoDB connected");
+//   }
+// }
 
 const handler = serverless(app);
 
