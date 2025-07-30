@@ -37,7 +37,7 @@ const connectDB = async () => {
 
 // Route middleware
 app.post('/api/deepak', async (req, res) => {
-  await connectDB();
+//   await connectDB();
   const { email, name } = req.body;
   res.json({ success: true, data: { email, name } });
 });
