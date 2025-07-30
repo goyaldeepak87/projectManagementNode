@@ -1,11 +1,9 @@
-// api/index.js
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const serverless = require('serverless-http');
 
-// MongoDB config
-const MONGODB_URL = process.env.MONGODB_URL || 'your-local-mongo-url';
+const MONGODB_URL = process.env.MONGODB_URL;
 
 const app = express();
 
@@ -13,35 +11,27 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('✅ API is working on Vercel or locally');
+  res.send('✅ API is working on Vercel');
 });
 
-// let isConnected = false;
-// let db = null;
-// async function connectToDatabase() {
-//   if (!db) {
-//     db = await mongoose.connect(MONGODB_URL, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     console.log("✅ MongoDB connected");
-//   }
-// }
+// MongoDB lazy connection (runs only once per cold start)
+let isConnected = false;
+
+async function connectToDatabase() {
+  if (!isConnected) {
+    await mongoose.connect('mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log("✅ MongoDB connected");
+  }
+}
 
 const handler = serverless(app);
 
-// Vercel export
+// This is the only thing Vercel will run
 module.exports = async (req, res) => {
   await connectToDatabase();
   return handler(req, res);
 };
-
-// Local development server
-if (require.main === module) {
-  (async () => {
-    await connectToDatabase();
-    app.listen(3000, () => {
-      console.log('🚀 Server running on http://localhost:3000');
-    });
-  })();
-}
