@@ -5,21 +5,11 @@ const routes = require('../src/routes/v1');
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:3001', // your local frontend
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('❌ Not allowed by CORS'));
-    }
-  },
-  credentials: true, // or false if not using cookies or auth headers
+  origin: ['http://localhost:3001', 'https://your-frontend.vercel.app'], // add both local and deployed frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'app-environment', 'device-name', 'device-id', 'device-type', 'ip-address', 'os-version'],
+  credentials: true,
 }));
 
 // app.options('*', cors()); // Handle preflight
