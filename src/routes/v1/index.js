@@ -36,4 +36,11 @@ if (config.env === 'development') {
   });
 }
 
+app.get('/deepak', (req, res) => {
+  res.send(`
+    <h2>🚀 API Status: ✅ Working</h2>
+    <h3>🛢️ MongoDB Status: ${mongoStatus}</h3>
+  `);
+});
+
 module.exports = router;
