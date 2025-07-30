@@ -10,10 +10,7 @@ app.use(express.json());
 let mongoStatus = '';
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect('mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0')
 .then(() => {
    mongoStatus = '✅ Connected';
   console.log('✅ Connected to MongoDB');
