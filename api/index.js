@@ -8,7 +8,7 @@ app.use(express.json());
 
 let mongoStatus = '⏳ Connecting...';
 
-const MONGODB_URL = 'mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0';
+const MONGODB_URL = 'mongodb+srv://goyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority';
 
 // MongoDB Connection
 mongoose.connect(MONGODB_URL, {
