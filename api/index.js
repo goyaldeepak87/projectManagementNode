@@ -7,21 +7,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+let mongoStatus = '❌ Not Connected';
+
 // MongoDB Connection
 mongoose.connect('mongodb+srv://g1oyaldeepak871:8jKN5Bks6GLzuHAA@cluster0.w4xlt97.mongodb.net/mydatabaseProject?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => {
+   mongoStatus = '✅ Connected';
   console.log('✅ Connected to MongoDB');
 })
 .catch((err) => {
+  mongoStatus = '❌ Connection Failed';
   console.error('❌ MongoDB connection failed:', err.message);
 });
 
 // Test Route
 app.get('/', (req, res) => {
-  res.send('✅ API is working and MongoDB is connected');
+   res.send(`API Status: ✅ Working <br> MongoDB: ${mongoStatus}`);
 });
 
 // app.use('/v1/users', userRoutes);
