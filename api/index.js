@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('../src/routes/v1');
+const authController = require('../src/controllers/auth.controller');
 
 const app = express();
 
@@ -39,7 +40,7 @@ async function connectDB() {
   isConnected = true;
 }
 
-app.use('/v3', routes);
+app.post('/register', authController.register);
 
 // Root route
 app.get('/', async (req, res) => {
