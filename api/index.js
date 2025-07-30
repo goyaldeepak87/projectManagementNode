@@ -9,7 +9,7 @@ app.use(cors({
   origin: ['http://localhost:3001'], // or replace with ['https://your-frontend.vercel.app']
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'app-environment', 'device-name', 'device-id', 'device-type', 'ip-address', 'os-version'],
-  credentials: true, // If you're using cookies or auth headers
+  credentials: true, // If you're using cookies or auth headers cxcx
 }));
 
 app.options('*', cors()); // Handle preflight
