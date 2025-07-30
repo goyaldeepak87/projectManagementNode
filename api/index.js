@@ -5,11 +5,21 @@ const routes = require('../src/routes/v1');
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:3001', // your local frontend
+];
+
 app.use(cors({
-  origin: ['http://localhost:3001'], // or replace with ['https://your-frontend.vercel.app']
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('❌ Not allowed by CORS'));
+    }
+  },
+  credentials: true, // or false if not using cookies or auth headers
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false, // If you're using cookies or auth headers dxcsx
 }));
 
 // app.options('*', cors()); // Handle preflight
