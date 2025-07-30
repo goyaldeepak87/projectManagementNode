@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/deepak', (req, res) => {
-  const { email, name } = req.body; // ✅ fixed from res.body to req.body
-  res.send({ email, name });
+  const { email, name } = req.body;
+  res.json({ email, name });
 });
 
 router.post('/login', validate(authValidation.login), authController.login);
