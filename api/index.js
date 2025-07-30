@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const routes = require('../src/routes/v1');
+// const routes = require('../src/routes/v1');
 
 const app = express();
 app.use(cors());
@@ -47,7 +47,7 @@ app.get('/v2', (req, res) => {
   `);
 });
 
-app.use('/v1', routes);
+// app.use('/v1', routes);
 
 const PORT = 8000;
 app.listen(PORT, () => {
