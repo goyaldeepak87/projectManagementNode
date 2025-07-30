@@ -34,6 +34,19 @@ app.get('/', (req, res) => {
   `);
 });
 
+app.get('/v1', (req, res) => {
+  res.send(`
+    <h2>🚀 API Status: ✅ Working</h2>
+    <h3>🛢️ MongoDB Status: ${mongoStatus}</h3>
+  `);
+});
+
+app.get('/v2', (req, res) => {
+  res.send(`
+    <h2>🚀 API Status: ✅ Working</h2>
+  `);
+});
+
 // app.use('/v1', routes);
 const PORT = 8000;
 app.listen(PORT, () => {
