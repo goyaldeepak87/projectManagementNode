@@ -5,15 +5,16 @@ const routes = require('../src/routes/v1');
 
 const app = express();
 
-app.use(cors({
-  origin: ['http://localhost:3001'], // or replace with ['https://your-frontend.vercel.app']
+const corsOptions = {
+  origin: [
+    'http://localhost:3001'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // If you're using cookies or auth headers dxcsx
-}));
+  credentials: true,
+};
 
-app.options('*', cors()); // Handle preflight
-
+app.use(cors(corsOptions));
 app.use(express.json());
 
 let mongoStatus = '⏳ Connecting...';
