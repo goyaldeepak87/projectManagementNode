@@ -1,3 +1,4 @@
+// src/app.js
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -16,56 +17,50 @@ const ApiError = require('./utils/ApiError');
 
 const app = express();
 
+// Logging
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
 
-// set security HTTP headers
+// Security
 app.use(helmet());
-
-// parse json request body
-app.use(express.json());
-
-// parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
-
-// sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
 
-// gzip compression
-app.use(compression());
+// JSON & URL encoding
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// enable cors
+// Compression & CORS
+app.use(compression());
 app.use(cors());
 app.options('*', cors());
 
-// jwt authentication
+// JWT auth
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
-// limit repeated failed requests to auth endpoints
+// Rate limiter (optional)
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
 
-// v1 api routes
+// Routes
 app.use('/v1', routes);
 
-// send back a 404 error for any unknown api request
+// 404
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
 
+// Custom response format
 app.response.sendJSONResponse = function ({ statusCode, status = true, message, data, isShowMessage = true }) {
   return this.status(statusCode).json({ statusCode, status, message, isShowMessage, data });
 };
 
-// convert error to ApiError, if needed
+// Error handling
 app.use(errorConverter);
-
-// handle error
 app.use(errorHandler);
 
 module.exports = app;
