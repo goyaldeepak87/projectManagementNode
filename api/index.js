@@ -1,23 +1,47 @@
 // api/index.js
-const serverless = require('serverless-http');
+const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
-const app = require('../src/app');
-const config = require('../src/config/config');
+const serverless = require('serverless-http');
 
-let isConnected = false;
+// MongoDB config
+const MONGODB_URL = process.env.MONGODB_URL || 'your-local-mongo-url';
 
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('✅ API is working on Vercel or locally');
+});
+
+// let isConnected = false;
+let db = null;
 async function connectToDatabase() {
-  if (!isConnected) {
-    await mongoose.connect(config.mongoose.url, config.mongoose.options);
-    isConnected = true;
+  if (!db) {
+    db = await mongoose.connect(MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("✅ MongoDB connected");
   }
 }
 
-// This is how Vercel handles serverless Express
 const handler = serverless(app);
 
+// Vercel export
 module.exports = async (req, res) => {
   await connectToDatabase();
   return handler(req, res);
 };
+
+// Local development server
+if (require.main === module) {
+  (async () => {
+    await connectToDatabase();
+    app.listen(3000, () => {
+      console.log('🚀 Server running on http://localhost:3000');
+    });
+  })();
+}
