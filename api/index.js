@@ -40,7 +40,10 @@ async function connectDB() {
   isConnected = true;
 }
 
-app.post('/register', authController.register);
+app.post('/deepak', (req, res) => {
+  const { email, name } = req.body;
+  res.json({ email, name });
+});
 
 // Root route
 app.get('/', async (req, res) => {
