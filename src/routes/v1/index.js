@@ -36,11 +36,4 @@ if (config.env === 'development') {
   });
 }
 
-router.get('/deepak', (req, res) => {
-  res.send(`
-    <h2>🚀 API Status: ✅ Working</h2>
-    <h3>🛢️ MongoDB Status deepak</h3>
-  `);
-});
-
 module.exports = router;
