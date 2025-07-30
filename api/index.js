@@ -4,8 +4,16 @@ const mongoose = require('mongoose');
 const routes = require('../src/routes/v1');
 
 const app = express();
-app.use(cors());
-app.options('*', cors());
+
+app.use(cors({
+  origin: '*', // or replace with ['https://your-frontend.vercel.app']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // If you're using cookies or auth headers
+}));
+
+app.options('*', cors()); // Handle preflight
+
 app.use(express.json());
 
 let mongoStatus = '⏳ Connecting...';
