@@ -19,7 +19,7 @@ app.use(cors({
       return callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'app-environment', 'device-name', 'device-id', 'device-type', 'ip-address', 'os-version'],
 }));
