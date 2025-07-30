@@ -2,24 +2,21 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('../src/routes/v1');
-const authController = require('../src/controllers/auth.controller');
 
 const app = express();
 
-// ✅ CORS configuration
 const allowedOrigins = [
-  'http://localhost:3001', // local dev
-  'https://your-frontend.vercel.app', // deployed frontend
+  'http://localhost:3001',
+  'https://your-frontend.vercel.app',
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
-      return callback(new Error('❌ Not allowed by CORS'));
+      return callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
@@ -27,9 +24,12 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'app-environment', 'device-name', 'device-id', 'device-type', 'ip-address', 'os-version'],
 }));
 
+// ✅ CORS preflight handling (this line is critical!)
+app.options('*', cors());
+
 app.use(express.json());
 
-// Your MongoDB connection
+// MongoDB connection
 let isConnected = false;
 async function connectDB() {
   if (isConnected) return;
@@ -45,11 +45,9 @@ app.post('/deepak', (req, res) => {
   res.json({ email, name });
 });
 
-// Root route
 app.get('/', async (req, res) => {
   await connectDB();
   res.send('✅ Serverless API working with MongoDB and CORS');
 });
 
-// ✅ VERY IMPORTANT: Export app — don’t use app.listen
 module.exports = app;
